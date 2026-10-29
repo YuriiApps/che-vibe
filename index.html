@@ -1,0 +1,1673 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Чернігів VIBE 3.0</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+    /* Layout: sticky nav; hero, rubric grid, then a horizontal swipe strip of partner banners. Light background (тестовий варіант). */
+    :root {
+        --bg-color: #ffffff;
+        --card-bg: #f8fafc;
+        --line: #e2e8f0;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --accent-pink: #ec4899;
+        --accent-purple: #8b5cf6;
+        --accent-cyan: #06b6d4;
+        --accent-green: #10b981;
+        --accent-yellow: #f59e0b;
+        --ad-blue: #0284c7;
+        --header-bg: rgba(255, 255, 255, 0.9);
+        color-scheme: light;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto;
+        height: env(safe-area-inset-top, 0px);
+        z-index: 1001;
+        background: var(--card-bg);
+    }
+
+    .wrap {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    [tabindex]:focus-visible {
+        outline: 2px solid var(--accent-cyan);
+        outline-offset: 3px;
+    }
+
+    /* Navigation Header */
+    header {
+        background: var(--header-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        z-index: 1000;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding-block: 1rem;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        font-weight: 800;
+        white-space: nowrap;
+        background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-decoration: none;
+    }
+
+    nav { min-width: 0; }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        align-items: center;
+    }
+
+    /* Left column: Робота (демо). Ті самі розміри й поведінка, що й права колонка. */
+    @media (min-width: 1000px) and (max-width: 1199px) {
+        .main-wrapper { grid-template-columns: minmax(0, 1fr) 280px; }
+        .jobs-col { display: none; }
+    }
+
+    @media (min-width: 1200px) {
+        .main-wrapper {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 6fr) minmax(0, 1fr);
+            max-width: none;
+        }
+        .jobs-col { grid-column: 1; grid-row: 1; }
+        .content-area { grid-column: 2; grid-row: 1; }
+        .top-ads:not(.jobs-col) { grid-column: 3; grid-row: 1; }
+    }
+
+    /* Header premium banner (demo, 1 тиждень) */
+    .header-promo {
+        display: none;
+        position: relative;
+        flex: 0 1 260px;
+        min-width: 0;
+        height: 60px;
+        overflow: hidden;
+        padding: 0;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background:
+            linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+            linear-gradient(to right, var(--accent-pink), var(--accent-purple)) border-box;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .header-promo:hover { transform: translateY(-2px); }
+
+    .header-promo-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .header-promo .demo-tag {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        z-index: 1;
+    }
+
+    /* Підпис банера зліва, на білій плашці поверх фото */
+    .header-promo-text {
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        max-width: calc(100% - 60px);
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 6px;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .header-promo-text strong {
+        display: block;
+        font-size: 0.8rem;
+    }
+
+    .header-promo-text strong,
+    .header-promo-text span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .header-promo-text strong {
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .header-promo-text span {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    @media (min-width: 1100px) {
+        .header-promo { display: flex; }
+    }
+
+    nav li { padding-inline: 1.2rem; }
+    nav li:first-child { padding-left: 0; }
+    nav li + li { border-left: 1px solid var(--line); }
+
+    nav a {
+        color: #000000;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.95rem;
+        white-space: nowrap;
+        transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--accent-cyan); }
+
+    /* Main Wrapper */
+    .main-wrapper { padding-block: 2rem 0; }
+
+    .content-area { min-width: 0; }
+
+    /* Right column: top ads (demo) */
+    .top-ads {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        min-width: 0;
+        margin-top: 2.5rem;
+    }
+
+    .top-ads-title {
+        font-size: 1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .top-ads-title span {
+        background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .top-ad {
+        background: var(--card-bg);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .top-ad:hover,
+    .top-ad:focus-visible {
+        border-color: var(--accent-purple);
+        box-shadow: 0 6px 18px rgba(139, 92, 246, 0.2), 0 0 0 1px var(--accent-pink) inset;
+    }
+
+    .top-ad-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .top-ad-rank {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--accent-pink);
+    }
+
+    .demo-tag {
+        background: var(--text-muted);
+        color: #ffffff;
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .top-ad h4 {
+        font-size: 0.92rem;
+        color: var(--text-main);
+    }
+
+    .top-ad p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    @media (min-width: 1000px) {
+        .main-wrapper {
+            display: grid;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .top-ads {
+            position: sticky;
+            top: 110px;
+            max-height: calc(100vh - 130px);
+            overflow-y: auto;
+            margin-top: 0;
+            padding-right: 4px;
+        }
+
+        /* Заголовок колонки лишається зверху, поки колонка прокручується */
+        .top-ads-title {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: var(--bg-color);
+            padding-block: 0.25rem 0.5rem;
+        }
+    }
+
+    /* Hero Section */
+    .hero-card {
+        background:
+            linear-gradient(rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.82)),
+            url("images/2.webp") center / cover no-repeat;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: clamp(1.25rem, 4vw, 2rem);
+        margin-bottom: 2rem;
+        cursor: pointer;
+        transition: border-color 0.2s;
+    }
+
+    .hero-card:hover { border-color: var(--accent-pink); }
+
+    .hero-card h2 {
+        font-size: clamp(1.35rem, 3.2vw, 1.9rem);
+        line-height: 1.25;
+        text-wrap: balance;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-card p {
+        color: var(--text-muted);
+        max-width: 65ch;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+    }
+
+    .badge-vibe { background: var(--accent-pink); color: #fff; }
+    .badge-ad { background: var(--ad-blue); color: #fff; }
+
+    /* Sections Grid */
+    .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: 1.5rem;
+    }
+
+    .section-box {
+        background: var(--card-bg);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0;
+        scroll-margin-top: 150px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 0.75rem;
+    }
+
+    .section-title a {
+        color: var(--accent-cyan);
+        font-size: 0.85rem;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .section-title a:hover { text-decoration: underline; }
+
+    .section-title > span {
+        background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .item-card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 1rem;
+        transition: transform 0.2s, border-color 0.2s;
+        border: 1px solid var(--line);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .item-card:hover,
+    .item-card:focus-visible {
+        transform: translateY(-3px);
+        border-color: var(--accent-purple);
+        box-shadow: 0 6px 18px rgba(139, 92, 246, 0.2), 0 0 0 1px var(--accent-pink) inset;
+    }
+
+    .item-card h4 {
+        margin-bottom: 0.4rem;
+        font-size: 0.95rem;
+    }
+
+    .item-card p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    /* Шість рубрик — один горизонтальний ряд на комп'ютері, вертикальний список на телефоні */
+    @media (min-width: 641px) {
+        .content-grid {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .content-grid > .section-box {
+            flex: 0 0 min(300px, 85%);
+            scroll-snap-align: start;
+        }
+    }
+
+    /* На широкому екрані шість рубрик вміщаються в ряд без прокрутки */
+    @media (min-width: 1000px) {
+        .content-grid {
+            overflow-x: visible;
+            gap: 0.75rem;
+        }
+
+        .content-grid > .section-box {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 1rem;
+            gap: 0.75rem;
+        }
+
+        .content-grid > .section-box .section-title {
+            font-size: 0.95rem;
+        }
+
+        .content-grid > .section-box .section-title a {
+            font-size: 0.75rem;
+        }
+    }
+
+    /* Partner banners: horizontal swipe carousel */
+    .ads-strip {
+        margin-top: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        min-width: 0;
+    }
+
+    .ads-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .ads-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .live {
+        font-size: 0.7rem;
+        color: var(--accent-pink);
+        letter-spacing: 0;
+    }
+
+    .ads-arrows {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .ads-arrow {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: var(--card-bg);
+        color: var(--text-main);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+    }
+
+    .ads-arrow:hover:not(:disabled) {
+        background: var(--accent-purple);
+        border-color: var(--accent-purple);
+        color: #fff;
+    }
+
+    .ads-arrow:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    .ads-track {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-block: 6px;
+        margin-block: -6px;
+    }
+
+    .ads-track::-webkit-scrollbar { display: none; }
+
+    .ads-track > * {
+        flex: 0 0 calc((100% - 2rem) / 3);
+        scroll-snap-align: start;
+        min-width: 0;
+    }
+
+    @media (max-width: 900px) {
+        .ads-track > * { flex-basis: calc((100% - 1rem) / 2); }
+    }
+
+    @media (max-width: 560px) {
+        .ads-track > * { flex-basis: 85%; }
+    }
+
+    .ads-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .ads-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        border: none;
+        background: var(--line);
+        cursor: pointer;
+        transition: width 0.2s, background 0.2s;
+    }
+
+    .ads-dot[aria-current="true"] {
+        width: 22px;
+        background: var(--accent-pink);
+    }
+
+    .ad-banner {
+        background: var(--card-bg);
+        border: 2px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .ad-banner.newest {
+        border-color: var(--accent-pink);
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);
+    }
+
+    .ad-banner:hover { border-color: var(--accent-cyan); }
+    .ad-banner.newest:hover { border-color: var(--accent-pink); }
+
+    .ad-image-placeholder {
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        text-align: center;
+        padding-inline: 1rem;
+    }
+
+    .ad-kava { background: #312e81; color: #a5b4fc; }
+    .ad-street { background: #064e3b; color: #6ee7b7; }
+    .ad-school { background: #701a75; color: #f0abfc; }
+    .ad-demo { background: #e2e8f0; color: #334155; }
+    .ad-photo { display: block; width: 100%; height: 140px; object-fit: cover; }
+
+    /* У колонці «Робота» номери вакансій не показуємо */
+    .jobs-col .top-ad-rank { display: none; }
+
+    /* Усі демо-банери стрічки показують тестове фото; підпис заглушки приховано */
+    .ads-track .ad-image-placeholder {
+        background: #ffffff url("images/4.jpg") center / cover no-repeat;
+        color: transparent;
+        font-size: 0;
+    }
+
+    .ad-content { padding: 1rem; }
+
+    .ad-content h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+        color: var(--text-main);
+    }
+
+    .ad-content p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .ad-tag {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .add-your-ad {
+        border: 2px dashed var(--line);
+        border-radius: 14px;
+        padding: 1.2rem;
+        text-align: center;
+        background: #ffffff;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        color: var(--accent-cyan);
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-your-ad:hover {
+        background: var(--card-bg);
+        border-color: var(--accent-cyan);
+    }
+
+    /* Responsive Mobile Layout */
+    @media (max-width: 900px) {
+        .nav-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding-block: 0.75rem;
+        }
+        nav { width: 100%; }
+        nav ul { flex-wrap: wrap; row-gap: 0.35rem; }
+        nav a { font-size: 0.85rem; }
+        nav li { padding-inline: 0.6rem; }
+        nav li:first-child { padding-left: 0; }
+    }
+
+    /* Історії розділів і архів */
+    .story-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .story-date {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .archive {
+        width: min(640px, calc(100% - 32px));
+        max-height: 85vh;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--bg-color);
+        color: var(--text-main);
+    }
+
+    .archive::backdrop { background: rgba(15, 23, 42, 0.55); }
+
+    .archive-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .archive-head h3 { font-size: 1.1rem; }
+
+    .archive-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: var(--card-bg);
+        color: var(--text-main);
+        font-size: 1.2rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .archive-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+        overflow-y: auto;
+        max-height: calc(85vh - 70px);
+    }
+
+    /* Повний текст історії: невелике вікно біля картки зі стрілкою на неї */
+    .story-pop {
+        position: fixed;
+        inset: auto;
+        margin: 0;
+        width: min(380px, calc(100vw - 32px));
+        max-height: 70vh;
+        padding: 0;
+        overflow: visible;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--bg-color);
+        color: var(--text-main);
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
+    }
+
+    .story-pop::before {
+        content: "";
+        position: absolute;
+        top: calc(var(--arrow-y, 40px) - 8px);
+        width: 14px;
+        height: 14px;
+        background: var(--bg-color);
+        border: 1px solid var(--line);
+        transform: rotate(45deg);
+    }
+
+    .story-pop[data-side="right"]::before { left: -8px; border-right: 0; border-top: 0; }
+    .story-pop[data-side="left"]::before { right: -8px; border-left: 0; border-bottom: 0; }
+
+    .story-pop .archive-body { max-height: calc(70vh - 70px); }
+
+    .archive-body {
+        padding: 1rem 1.25rem;
+        overflow-y: auto;
+        max-height: calc(85vh - 70px);
+    }
+
+    .archive-body p {
+        margin-top: 0.6rem;
+        line-height: 1.6;
+        color: var(--text-muted);
+    }
+
+    /* Заголовок і статичний банер колонки: не прокручуються, поки колонка йде по колу */
+    .top-ads-head {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+    }
+
+    .static-ad {
+        position: relative;
+        height: 110px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+    .static-ad img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .static-ad-label {
+        position: absolute;
+        left: 8px;
+        bottom: 8px;
+        z-index: 1;
+        padding: 0.3rem 0.6rem;
+        border-radius: 8px;
+        background: #ffffff;
+        color: var(--text-main);
+        font-size: 0.9rem;
+        font-weight: 800;
+    }
+
+    .static-ad .demo-tag {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        z-index: 1;
+    }
+
+    @media (min-width: 1000px) {
+        .top-ads-head {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: var(--bg-color);
+            padding-bottom: 0.25rem;
+        }
+    }
+
+    /* Footer */
+    footer {
+        border-top: 1px solid var(--line);
+        margin-top: 4rem;
+        padding-block: 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.75rem;
+    }
+
+    .contacts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .contacts-title {
+        color: var(--text-main);
+        font-size: 1.2rem;
+    }
+
+    .contacts-lead { max-width: 45ch; }
+
+    .contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 0.75rem;
+    }
+
+    .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 220px;
+        max-width: 100%;
+        padding: 0.75rem 1.1rem;
+        border-radius: 14px;
+        background: var(--card-bg);
+        border: 1px solid var(--line);
+        color: var(--text-main);
+        text-decoration: none;
+        text-align: left;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .contact-link:hover { transform: translateY(-2px); }
+    .contact-tg:hover { border-color: var(--accent-cyan); }
+    .contact-tt:hover { border-color: var(--accent-pink); }
+
+    .contact-icon {
+        flex: none;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: #fff;
+    }
+
+    .contact-tg .contact-icon { background: var(--accent-cyan); }
+    .contact-tt .contact-icon { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink)); }
+
+    .contact-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3;
+        min-width: 0;
+    }
+
+    .contact-text span {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        overflow-wrap: anywhere;
+    }
+
+    .copyright { font-size: 0.85rem; }
+
+    /* Toast (replaces browser alert, which the preview blocks) */
+    .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+        transform: translateX(-50%);
+        width: max-content;
+        max-width: calc(100% - 32px);
+        background: var(--text-main);
+        color: #ffffff;
+        border: 1px solid var(--accent-purple);
+        border-radius: 12px;
+        padding: 0.8rem 1.1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        font-size: 0.9rem;
+        z-index: 2000;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
+        .item-card:hover { transform: none; }
+        .ads-track { scroll-behavior: auto; }
+    }
+</style>
+
+<!-- Header Navigation -->
+<header>
+    <div class="wrap nav-container">
+        <a href="#top" class="logo">ЧЕРНІГІВ VIBE</a>
+        <!-- Демо: преміум-банер у шапці на 1 тиждень -->
+        <div class="header-promo" tabindex="0" role="link" data-msg="Демо-банер: преміум-реклама в шапці на 1 тиждень">
+            <img class="header-promo-img" src="images/3.jpg" alt="Банер: ВАШ БАННЕР" width="72" height="44">
+            <span class="header-promo-text">
+                <strong>Преміум банер на 7 днів</strong>
+            </span>
+            <span class="demo-tag">ДЕМО</span>
+        </div>
+        <nav aria-label="Рубрики">
+            <ul>
+                <li><a href="#vibe">Вайб</a></li>
+                <li><a href="#scene">Сцена</a></li>
+                <li><a href="#creative">Креатив</a></li>
+                <li><a href="#stud">СтудПростір</a></li>
+                <li><a href="#mental">Відновлення</a></li>
+                <li><a href="#tok">Стріт-Ток</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Main 2-Column Layout -->
+<div class="wrap main-wrapper" id="top">
+
+    <!-- LEFT COLUMN: Content -->
+    <main class="content-area">
+
+        <article class="hero-card" tabindex="0" role="link" data-msg="Перехід до повної статті: Топ-8 затишних місць Чернігова">
+            <span class="badge badge-vibe">Гарячий Гайд</span>
+            <h2>Топ-8 секретних затишних локацій Чернігова, де зручно працювати з ноутбуком</h2>
+            <p>Перевірили особисто: наявність генераторів, швидкий Wi-Fi, якість спешелті-кави та затишні куточки для роботи та навчання.</p>
+        </article>
+
+
+        <div class="content-grid">
+
+            <!-- 1. Локальний Вайб -->
+            <section id="vibe" class="section-box">
+                <div class="section-title">
+                    <span>📍 Локальний Вайб</span>
+                    <a href="#" data-archive="vibe">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="vibe"></div>
+            </section>
+
+            <!-- 2. Андеграунд & Сцена -->
+            <section id="scene" class="section-box">
+                <div class="section-title">
+                    <span>🎸 Андеграунд &amp; Сцена</span>
+                    <a href="#" data-archive="scene">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="scene"></div>
+            </section>
+
+            <!-- 3. Креативний Чернігів -->
+            <section id="creative" class="section-box">
+                <div class="section-title">
+                    <span>💡 Креативний Чернігів</span>
+                    <a href="#" data-archive="creative">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="creative"></div>
+            </section>
+
+            <!-- 4. СтудПростір & Хаб -->
+            <section id="stud" class="section-box">
+                <div class="section-title">
+                    <span>🎓 СтудПростір</span>
+                    <a href="#" data-archive="stud">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="stud"></div>
+            </section>
+
+            <!-- 5. Режим Відновлення -->
+            <section id="mental" class="section-box">
+                <div class="section-title">
+                    <span>🌿 Режим Відновлення</span>
+                    <a href="#" data-archive="mental">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="mental"></div>
+            </section>
+
+            <!-- 6. Стріт-Ток & Меми -->
+            <section id="tok" class="section-box">
+                <div class="section-title">
+                    <span>💬 Стріт-Ток</span>
+                    <a href="#" data-archive="tok">Всі історії →</a>
+                </div>
+                <div class="story-list" data-section="tok"></div>
+            </section>
+
+        </div>
+
+        <!-- Партнери сайту: горизонтальна стрічка, гортається свайпом або стрілками -->
+        <section class="ads-strip" aria-label="Партнери сайту" aria-roledescription="карусель">
+            <div class="ads-header">
+                <div class="ads-title"><span>Партнери сайту</span><span class="live">● Наживо</span></div>
+                <div class="ads-arrows">
+                    <button type="button" class="ads-arrow" id="ads-prev" aria-label="Попередній банер">←</button>
+                    <button type="button" class="ads-arrow" id="ads-next" aria-label="Наступний банер">→</button>
+                </div>
+            </div>
+            <div class="ads-track" id="ads-track">
+            <!-- Банер 1: найновіший, преміум позиція -->
+            <div class="ad-banner ad-slide newest" tabindex="0" role="link" data-msg="Перехід на сайт або Instagram кав'ярні «KAVA VIBE»">
+                <span class="ad-tag">NEW РЕКЛАМА</span>
+                <div class="ad-image-placeholder ad-kava">[ Банер: KAVA VIBE ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Кав'ярня</span>
+                    <h4>Кав'ярня «KAVA VIBE» на Валу</h4>
+                    <p>Знижка 20% для студентів при показі студентського. Працюємо на генераторах!</p>
+                </div>
+            </div>
+
+            <!-- Банер 2 -->
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Перехід на сайт магазину Streetwear CN">
+                <span class="ad-tag">РЕКЛАМА</span>
+                <div class="ad-image-placeholder ad-street">[ Банер: STREETWEAR ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Одяг</span>
+                    <h4>Магазин Streetwear CN</h4>
+                    <p>Нова оверсайз колекція худі та овершотів. Завітай у ЦУМ, 2-й поверх.</p>
+                </div>
+            </div>
+
+            <!-- Банер 3 -->
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Перехід на сайт курсів Frontend-розробки">
+                <span class="ad-tag">РЕКЛАМА</span>
+                <div class="ad-image-placeholder ad-school">[ Банер: IT School ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Освіта</span>
+                    <h4>Курси Frontend-розробки</h4>
+                    <p>Навчись верстати сайти за 3 місяці у Чернігові. Перше заняття безкоштовно.</p>
+                </div>
+            </div>
+
+            <!-- Банери 4–11: демо для горизонтальної стрічки -->
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 4: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Ресторан ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Ресторан</span>
+                    <h4>Назва ресторану</h4>
+                    <p>Короткий текст оголошення: меню або подія.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 5: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Спортзал ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Спорт</span>
+                    <h4>Назва спортзалу</h4>
+                    <p>Короткий текст оголошення: пробне заняття або абонемент.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 6: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Туризм ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Туризм</span>
+                    <h4>Назва туроператора</h4>
+                    <p>Короткий текст оголошення: тури та маршрути.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 7: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Нерухомість ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Нерухомість</span>
+                    <h4>Назва агенції</h4>
+                    <p>Короткий текст оголошення: квартири та оренда.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 8: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Клініка ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Медицина</span>
+                    <h4>Назва клініки</h4>
+                    <p>Короткий текст оголошення: прийом або діагностика.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 9: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Салон зв'язку ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Техніка</span>
+                    <h4>Назва магазину</h4>
+                    <p>Короткий текст оголошення: нові моделі та акції.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 10: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Квіти ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Квіти</span>
+                    <h4>Назва квітковий магазин</h4>
+                    <p>Короткий текст оголошення: букети на будь-який день.</p>
+                </div>
+            </div>
+
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Демо-банер 11: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <div class="ad-image-placeholder ad-demo">[ Банер: Перукарня ]</div>
+                <div class="ad-content">
+                    <span class="badge badge-ad">Краса</span>
+                    <h4>Назва перукарні</h4>
+                    <p>Короткий текст оголошення: стрижка та догляд.</p>
+                </div>
+            </div>
+
+            <!-- Тестовий банер (фото) в кінці стрічки -->
+            <div class="ad-banner ad-slide" tabindex="0" role="link" data-msg="Тестовий банер: тут буде посилання на рекламодавця">
+                <span class="ad-tag">ДЕМО</span>
+                <img class="ad-photo" src="images/4.jpg" alt="Тестовий банер: ВАШ БАННЕР">
+                <div class="ad-content">
+                    <span class="badge badge-ad">Тест</span>
+                    <h4>Тестовий банер</h4>
+                    <p>Так виглядатиме реклама з фото.</p>
+                </div>
+            </div>
+
+            <button type="button" class="add-your-ad ad-slide" id="add-ad" data-msg="Щоб розмістити банер, напишіть нам у Telegram">+ Розмістити рекламний банер вашого бізнесу</button>
+            </div>
+            <div class="ads-dots" id="ads-dots"></div>
+        </section>
+    </main>
+
+    <!-- Right column: топ оголошення (демо) -->
+    <aside class="top-ads" aria-label="Промо & Спецпропозиції">
+        <div class="top-ads-head">
+            <div class="top-ads-title"><span>Промо &amp; Спецпропозиції</span></div>
+            <div class="static-ad" data-msg="Статичний банер: тут буде посилання на рекламодавця">
+                <span class="demo-tag">ДЕМО</span>
+                <img src="images/4.jpg" alt="Банер: ВАШ БАННЕР">
+                <span class="static-ad-label">Банер 24/7</span>
+            </div>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 1: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Кафе · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: пропозиція або знижка.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 2: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Спецпропозиції</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Фітнес · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: пробне заняття або абонемент.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 3: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Авто · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: сервіс або мийка.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 4: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Спецпропозиції</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Освіта · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: курси або репетиторство.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 5: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Краса · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: салон або майстерня.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 6: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Спецпропозиції</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Ремонт · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: послуги майстра.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 7: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Книгарня · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: новинки або подія.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 8: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Спецпропозиції</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Коворкінг · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: робочі місця та тарифи.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 9: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Доставка · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: доставка по місту.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер 10: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Спецпропозиції</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Магазин · Назва бізнесу</h4>
+            <p>Короткий текст оголошення: акція тижня.</p>
+        </div>
+        <div class="top-ad" tabindex="0" role="link" data-msg="Демо-банер B2B: тут буде посилання на рекламодавця">
+            <div class="top-ad-head"><span class="top-ad-rank">Промо</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>B2B · Назва компанії</h4>
+            <p>Короткий текст оголошення: пропозиція для бізнесу.</p>
+        </div>
+    </aside>
+
+    <!-- Ліва колонка: Робота (демо) -->
+    <aside class="top-ads jobs-col" aria-label="Робота">
+        <div class="top-ads-head">
+            <div class="top-ads-title"><span>СтудWork</span></div>
+            <div class="static-ad" data-msg="Статичний демо-банер: тут буде посилання на рекламодавця">
+                <span class="demo-tag">ДЕМО</span>
+                <img src="images/5.jpg" alt="Демо-банер: ВАШ БАННЕР">
+                <span class="static-ad-label">24/7</span>
+            </div>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 1: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №1</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Менеджер з продажів</h4>
+            <p>Опис: ведення клієнтів, консультації та обробка заявок. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_1</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 2: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №2</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>SMM-спеціаліст</h4>
+            <p>Опис: ведення соцмереж, планування публікацій і звітність. Неповна зайнятість.</p>
+            <p>Контакт: @demo_job_2</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 3: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №3</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Адміністратор кафе</h4>
+            <p>Опис: прийом гостей, бронювання столів і робота з персоналом. Змінний графік.</p>
+            <p>Контакт: @demo_job_3</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 4: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №4</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Бариста</h4>
+            <p>Опис: приготування напоїв, підтримка чистоти бару. Змінний графік.</p>
+            <p>Контакт: @demo_job_4</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 5: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №5</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Кур'єр</h4>
+            <p>Опис: доставка замовлень по місту на власному транспорті. Гнучкий графік.</p>
+            <p>Контакт: @demo_job_5</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 6: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №6</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Викладач англійської</h4>
+            <p>Опис: групові та індивідуальні заняття для дорослих і дітей. Неповна зайнятість.</p>
+            <p>Контакт: @demo_job_6</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 7: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №7</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Продавець-консультант</h4>
+            <p>Опис: консультування покупців, викладка товару, робота з касою. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_7</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 8: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №8</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Монтажер відео</h4>
+            <p>Опис: монтаж коротких відео для соцмереж, субтитри, кольокорекція. Віддалено.</p>
+            <p>Контакт: @demo_job_8</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 9: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №9</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Клінер</h4>
+            <p>Опис: прибирання офісних приміщень за графіком. Неповна зайнятість.</p>
+            <p>Контакт: @demo_job_9</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 10: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №10</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Майстер манікюру</h4>
+            <p>Опис: манікюр і педикюр, ведення записів клієнтів. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_10</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 11: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №11</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Бухгалтер</h4>
+            <p>Опис: первинна документація, звітність і розрахунок податків. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_11</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 12: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №12</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Офіс-менеджер</h4>
+            <p>Опис: організація роботи офісу, документообіг, координація команди. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_12</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 13: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №13</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Дизайнер інтерʼєрів</h4>
+            <p>Опис: розробка концепцій, робота з замовниками та підрядниками. Проєктна робота.</p>
+            <p>Контакт: @demo_job_13</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 14: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №14</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Водій категорії B</h4>
+            <p>Опис: перевезення вантажів і пасажирів, ведення путівних листів. Повна зайнятість.</p>
+            <p>Контакт: @demo_job_14</p>
+        </div>
+        <div class="top-ad job-card" tabindex="0" role="link" data-msg="Демо-вакансія 15: повний опис і контакт буде тут">
+            <div class="top-ad-head"><span class="top-ad-rank">Вакансія №15</span><span class="demo-tag">ДЕМО</span></div>
+            <h4>Frontend-розробник</h4>
+            <p>Опис: верстка інтерфейсів, робота з API, участь у дизайн-рев'ю. Віддалено.</p>
+            <p>Контакт: @demo_job_15</p>
+        </div>
+    </aside>
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="wrap footer-inner">
+        <div class="contacts">
+            <h3 class="contacts-title">Контакти</h3>
+            <p class="contacts-lead">Маєш ідею, статтю чи хочеш розмістити рекламу? Пиши нам.</p>
+            <div class="contact-links">
+                <a href="#" class="contact-link contact-tg" id="contact-telegram" data-msg="Тут буде посилання на Telegram-канал">
+                    <span class="contact-icon" aria-hidden="true">TG</span>
+                    <span class="contact-text"><strong>Telegram</strong><span>@нікнейм_каналу</span></span>
+                </a>
+                <a href="#" class="contact-link contact-tt" id="contact-tiktok" data-msg="Тут буде посилання на TikTok">
+                    <span class="contact-icon" aria-hidden="true">TT</span>
+                    <span class="contact-text"><strong>TikTok</strong><span>@нікнейм_акаунта</span></span>
+                </a>
+            </div>
+        </div>
+        <p class="copyright">© 2026 Чернігів VIBE. Незалежний молодіжний портал без політики.</p>
+    </div>
+</footer>
+
+<dialog class="archive" id="archive" aria-labelledby="archive-title">
+    <div class="archive-head">
+        <h3 id="archive-title"></h3>
+        <button type="button" class="archive-close" id="archive-close" aria-label="Закрити">×</button>
+    </div>
+    <div class="archive-list" id="archive-list"></div>
+</dialog>
+
+<div class="story-pop" id="story" popover="auto" role="dialog" aria-labelledby="story-title" data-side="right">
+    <div class="archive-head">
+        <h3 id="story-title"></h3>
+        <button type="button" class="archive-close" id="story-close" aria-label="Закрити">×</button>
+    </div>
+    <div class="archive-body" id="story-body"></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+    (function () {
+        var toast = document.getElementById('toast');
+        var timer;
+
+        function show(msg) {
+            toast.textContent = msg;
+            toast.hidden = false;
+            clearTimeout(timer);
+            timer = setTimeout(function () { toast.hidden = true; }, 2800);
+        }
+
+        document.addEventListener('click', function (e) {
+            var el = e.target.closest('[data-msg]');
+            if (!el) return;
+            e.preventDefault();
+            show(el.getAttribute('data-msg'));
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+            var el = e.target.closest('[role="link"][data-msg]');
+            if (!el) return;
+            e.preventDefault();
+            show(el.getAttribute('data-msg'));
+        });
+    })();
+    (function () {
+        var track = document.getElementById('ads-track');
+        var prev = document.getElementById('ads-prev');
+        var next = document.getElementById('ads-next');
+        var dotsBox = document.getElementById('ads-dots');
+        var slides = Array.prototype.slice.call(track.querySelectorAll('.ad-slide'));
+        var dots = slides.map(function (slide, i) {
+            var d = document.createElement('button');
+            d.type = 'button';
+            d.className = 'ads-dot';
+            d.setAttribute('aria-label', 'Банер ' + (i + 1) + ' з ' + slides.length);
+            d.addEventListener('click', function () { go(i); });
+            dotsBox.appendChild(d);
+            return d;
+        });
+
+        function current() {
+            var left = track.scrollLeft, best = 0, dist = Infinity;
+            slides.forEach(function (s, i) {
+                var d = Math.abs(s.offsetLeft - track.offsetLeft - left);
+                if (d < dist) { dist = d; best = i; }
+            });
+            return best;
+        }
+
+        function go(i) {
+            i = Math.max(0, Math.min(slides.length - 1, i));
+            track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft });
+        }
+
+        function update() {
+            var c = current();
+            var max = track.scrollWidth - track.clientWidth;
+            dots.forEach(function (d, i) { d.setAttribute('aria-current', i === c ? 'true' : 'false'); });
+            prev.disabled = track.scrollLeft <= 2;
+            next.disabled = track.scrollLeft >= max - 2;
+        }
+
+        prev.addEventListener('click', function () { go(current() - 1); });
+        next.addEventListener('click', function () { go(current() + 1); });
+        track.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
+        track.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); go(current() + 1); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); go(current() - 1); }
+        });
+        window.addEventListener('resize', update);
+        update();
+
+        // Автопрокрутка: справа наліво, кожен банер стоїть 3 с, далі по колу.
+        // Пауза, поки курсор або фокус у стрічці; при prefers-reduced-motion вимкнена.
+        var HOLD = 3000, MOVE = 400;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var paused = false;
+
+        function step() {
+            if (paused) { setTimeout(step, 200); return; }
+            var max = track.scrollWidth - track.clientWidth;
+            if (track.scrollLeft >= max - 2) {
+                track.scrollTo({ left: 0, behavior: 'instant' });
+            } else {
+                go(current() + 1);
+            }
+            setTimeout(step, MOVE + HOLD);
+        }
+
+        track.addEventListener('pointerenter', function () { paused = true; });
+        track.addEventListener('pointerleave', function () { paused = false; });
+        track.addEventListener('focusin', function () { paused = true; });
+        track.addEventListener('focusout', function () { paused = false; });
+
+        if (!reduce.matches) setTimeout(step, HOLD);
+    })();
+    // Автопрокрутка колонок «Топ оголошення» і «Робота» зверху вниз по порядку: кожна картка 1 с, далі по колу.
+    document.querySelectorAll('.top-ads').forEach(function (box) {
+        // Пауза, поки курсор або фокус у колонці, щоб можна було колесом миші вибрати будь-який банер.
+        // Працює лише там, де колонка прокручується (від 1000px); при prefers-reduced-motion вимкнена.
+        var cards = box.querySelectorAll('.top-ad');
+        var HOLD = box.classList.contains('jobs-col') ? 1000 : 2000, MOVE = 400;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var paused = false;
+
+        function step() {
+            if (box.scrollHeight <= box.clientHeight + 2) { setTimeout(step, 1000); return; }
+            if (paused) { setTimeout(step, 200); return; }
+
+            var max = box.scrollHeight - box.clientHeight;
+            var head = box.querySelector('.top-ads-head');
+            var off = head ? head.offsetHeight : 0;
+            var cur = 0;
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].offsetTop - off <= box.scrollTop + 4) cur = i;
+            }
+
+            if (box.scrollTop >= max - 2 || cur + 1 >= cards.length) {
+                box.scrollTo({ top: 0, behavior: 'instant' });
+            } else {
+                box.scrollTo({ top: Math.min(cards[cur + 1].offsetTop - off, max), behavior: 'smooth' });
+            }
+            setTimeout(step, MOVE + HOLD);
+        }
+
+        box.addEventListener('pointerenter', function () { paused = true; });
+        box.addEventListener('pointerleave', function () { paused = false; });
+        box.addEventListener('focusin', function () { paused = true; });
+        box.addEventListener('focusout', function () { paused = false; });
+
+        if (!reduce.matches) setTimeout(step, HOLD);
+    });
+    (function () {
+        // Демо-історії: на головній по дві найновіші в кожному розділі, решта — в архіві розділу
+        var SECTIONS = {
+            vibe: 'Локальний Вайб',
+            scene: 'Андеграунд & Сцена',
+            creative: 'Креативний Чернігів',
+            stud: 'СтудПростір',
+            mental: 'Режим Відновлення',
+            tok: 'Стріт-Ток'
+        };
+        var STORIES = [
+            { section: 'vibe', date: '2026-09-12', title: 'Вінтажні дворики старого міста для фотосесій', text: 'Локації, про які знають лише місцеві фотографи.', body: [
+                'Старе місто Чернігова має кілька дворів, де збереглися цегляні стіни, старі ліхтарі та зелені подвір’я. Тут зручно знімати фотосесії: світло м’яке, а людей майже немає.',
+                'У цій демо-добірці три локації з описом: як до них дійти, коли там найспокійніше і чи потрібен дозвіл на зйомку.',
+                'Порада фотографів: приходьте рано вранці або ввечері, коли двори порожні, і беріть невеличку програму для підбору кадрів.'
+            ] },
+            { section: 'vibe', date: '2026-09-20', title: 'Маршрут для сапбордингу по Десні', text: 'Де орендувати дошку та як підготуватися.', body: [
+                'Десна на сході міста має спокійну воду, тому це добре місце для першого заняття з сапбордингу.',
+                'У демо-маршруті: відправна точка біля берега, орієнтовний час у дорозі, місце, де можна орендувати дошку, і список речей, які варто взяти.',
+                'Перед виходом перевірте прогноз вітру і візьміть рятувальний жилет. Новачкам краще обирати тихі дні без сильних хвиль.'
+            ] },
+            { section: 'scene', date: '2026-10-03', title: 'Благодійний інді-квартирник', text: 'Збір для місцевої бригади, виступають три гурти.', body: [
+                'Благодійний інді-квартирник збирає кошти для місцевої бригади. Виступають три гурти, кожен грає близько 30 хвилин.',
+                'Місце проведення в демо-версії не вказано, його потрібно уточнити перед заходом. Вхід вільний, але прийнятний добровільний внесок.',
+                'Організатори просять прийти заздалегідь. Частина зборів піде на потреби бригади, решта на покриття витрат заходу.'
+            ] },
+            { section: 'scene', date: '2026-10-17', title: 'Стендап-вечір від чернігівських коміків', text: 'Неформальний гумор, вхід за донат.', body: [
+                'Вечір стендапу з місцевими коміками: короткі виступи, неформальна атмосфера і гумор про життя в місті.',
+                'Вхід за донат, який можна зробити на місці. Виступи українською, частина жартів про студентське життя.',
+                'Тривалість вечора близько двох годин. Місць обмаль, тож краще забронювати заздалегідь.'
+            ] },
+            { section: 'creative', date: '2026-09-05', title: 'Як стартувати бренд одягу з малим бюджетом', text: 'Які помилки траплялися і як їх уникнути.', body: [
+                'Як стартувати бренд одягу з малим бюджетом: від першої партії футболок до перших продажів у соцмережах.',
+                'Головні кроки: перевірити попит на дві-три моделі, знайти виробника з малим мінімумом замовлення і порахувати собівартість до першого тиражу.',
+                'Типові помилки: велика партія без тестів, відсутній облік з першого дня і відсутність чіткого плану просування.'
+            ] },
+            { section: 'creative', date: '2026-09-22', title: 'Фріланс з Чернігова: як вийти на міжнародні платформи', text: 'Практичні поради для початку.', body: [
+                'Як почати роботу на міжнародних платформах для фрілансерів, не маючи великого досвіду.',
+                'Почніть з короткого портфоліо з трьох-чотирьох робіт, пишіть персональні пропозиції і беріть невеликі замовлення, щоб отримати перші відгуки.',
+                'Більшість замовників очікують швидких і зрозумілих відповідей письмово, тож пишіть чітко і вчасно.'
+            ] },
+            { section: 'stud', date: '2026-10-08', title: 'Гранти на молодіжні проєкти', text: 'Огляд можливостей для локальних ініціатив.', body: [
+                'Огляд грантів для молодіжних ініціатив: які програми відкриті, хто може подати заявку і які строки діють.',
+                'Типова заявка містить опис проєкту, бюджет і план на шість-дванадцять місяців. Підготовку радять починати за місяць до дедлайну.',
+                'Перед подачею уточніть вимоги в організатора: часто потрібні документи про реєстрацію та рекомендації від партнерів.'
+            ] },
+            { section: 'stud', date: '2026-09-24', title: 'Волонтерський табір з відбудови', text: 'Як долучитися та знайти однодумців.', body: [
+                'Волонтерський табір з відбудови: як долучитися, що робити на місці і які навички не обов’язкові.',
+                'Учасники допомагають із прибиранням, фарбуванням і дрібним ремонтом. Умови проживання, харчування й графік у демо-версії описуються окремо.',
+                'Беріть зручний одяг, рукавички і термос. Досвід не потрібен: першу зміну можна провести разом із досвідченими волонтерами.'
+            ] },
+            { section: 'mental', date: '2026-10-01', title: 'Міські бігові клуби: розклад зустрічей', text: 'Безкоштовні тренування для початківців.', body: [
+                'Міські бігові клуби збираються кілька разів на тиждень. Тренування безкоштовні і підходять для початківців.',
+                'Зустрічі відбуваються у двох місцях: у парку і біля набережної. Тренер підбирає темп, а дистанцію можна збільшувати поступово.',
+                'Щоб приєднатися, достатньо прийти на зустріч у зручному взутті. Розклад у демо-версії оновлюється щотижня.'
+            ] },
+            { section: 'mental', date: '2026-10-15', title: 'Техніки самодопомоги під час тривоги', text: 'Прості вправи, які можна зробити де завгодно.', body: [
+                'Прості техніки самодопомоги, які допомагають у хвилини тривоги, коли немає часу на довгі розмови.',
+                'Дихання за схемою 4–6: вдих на чотири рахунки, видих на шість. Заземлення: назвіть п’ять речей, які бачите, і чотири, яких можете торкнутися.',
+                'Ці вправи не замінюють консультацію фахівця. Якщо тривога триває довго, варто звернутися до психолога.'
+            ] },
+            { section: 'tok', date: '2026-10-10', title: 'Опитування: чого бракує молоді?', text: 'Голосування за коворкінг, скейт-парк чи галерею.', body: [
+                'Опитування тижня: чого бракує молоді в місті. Варіанти: коворкінг, скейт-парк або галерея.',
+                'Голосування в демо-версії проходить у формі. Результати публікуються в кінці тижня з короткими коментарями учасників.',
+                'Ваш голос допоможе побачити, які простори справді потрібні. Власні пропозиції можна писати окремо.'
+            ] },
+            { section: 'tok', date: '2026-09-26', title: 'Архів опитувань: що обрали минулого місяця', text: 'Підсумки попередніх голосувань.', body: [
+                'Підсумки попередніх опитувань: які варіанти набрали найбільше голосів і які коментарі повторювались.',
+                'У демо-архіві зібрано результати за місяць. Кожне опитування має окремий блок із цифрами та короткими висновками.',
+                'Архів допомагає побачити зміни з часом, тож пропозиції, які не набрали голосів, теж залишаються видимими.'
+            ] }
+        ];
+
+        function fmt(iso) {
+            var p = iso.split('-');
+            return p[2] + '.' + p[1] + '.' + p[0];
+        }
+
+        function storiesOf(sec) {
+            return STORIES.filter(function (s) { return s.section === sec; })
+                .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+        }
+
+        function card(s) {
+            return '<article class="item-card" data-story="' + STORIES.indexOf(s) + '"><time class="story-date">' + fmt(s.date) + ' · ДЕМО</time>' +
+                '<h4>' + s.title + '</h4><p>' + s.text + '</p></article>';
+        }
+
+        Object.keys(SECTIONS).forEach(function (sec) {
+            var all = storiesOf(sec);
+            document.querySelector('.story-list[data-section="' + sec + '"]').innerHTML = all.slice(0, 2).map(card).join('');
+            document.querySelector('a[data-archive="' + sec + '"]').textContent = 'Всі історії (' + all.length + ') →';
+        });
+
+        var dlg = document.getElementById('archive');
+        var dlgTitle = document.getElementById('archive-title');
+        var dlgList = document.getElementById('archive-list');
+
+        function openArchive(sec) {
+            dlgTitle.textContent = SECTIONS[sec];
+            dlgList.innerHTML = storiesOf(sec).map(card).join('');
+            dlg.showModal();
+        }
+
+        document.querySelectorAll('a[data-archive]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                openArchive(a.getAttribute('data-archive'));
+            });
+        });
+        document.getElementById('archive-close').addEventListener('click', function () { dlg.close(); });
+        dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+        // Повний текст історії: клік по картці на головній або в архіві
+        var story = document.getElementById('story');
+        var storyTitle = document.getElementById('story-title');
+        var storyBody = document.getElementById('story-body');
+
+        // Вікно ставиться збоку від картки, стрілка вказує на її центр
+        function placeStory(card) {
+            var r = card.getBoundingClientRect();
+            var gap = 16, W = story.offsetWidth, H = story.offsetHeight;
+            var side = r.right + gap + W <= innerWidth - 8 ? 'right' : 'left';
+            var left = side === 'right' ? r.right + gap : r.left - gap - W;
+            left = Math.max(8, Math.min(left, innerWidth - W - 8));
+            var mid = r.top + r.height / 2;
+            var top = Math.max(8, Math.min(mid - 40, innerHeight - H - 8));
+            var arrowY = Math.max(24, Math.min(mid - top, H - 24));
+            story.style.left = left + 'px';
+            story.style.top = top + 'px';
+            story.dataset.side = side;
+            story.style.setProperty('--arrow-y', arrowY + 'px');
+        }
+
+        function openStory(i, card) {
+            var s = STORIES[i];
+            storyTitle.textContent = s.title;
+            storyBody.innerHTML = '<time class="story-date">' + fmt(s.date) + ' · ДЕМО</time>' +
+                s.body.map(function (p) { return '<p>' + p + '</p>'; }).join('');
+            story.showPopover();
+            placeStory(card);
+        }
+
+        document.addEventListener('click', function (e) {
+            var c = e.target.closest('[data-story]');
+            if (c) openStory(Number(c.getAttribute('data-story')), c);
+        });
+        document.getElementById('story-close').addEventListener('click', function () { story.hidePopover(); });
+    })();
+</script>
+
+</body></html>
